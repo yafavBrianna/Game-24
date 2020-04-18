@@ -7,15 +7,24 @@ export default class GameScreen extends React.Component {
     super();
     this.state = {
       time: 0,
+      card1: 1,
+      card2: 2,
+      card3: 3,
+      card4: 4,
     };
 
+   
+    this.changeNumbers = this.changeNumbers.bind(this);
    
     setInterval(() =>{
     this.setState ({time: this.state.time+1 })
     }, 1000);
   }
 
-     render() {
+   componentDidMount() {
+     this.changeNumbers();
+   }
+  render() {
     return (
       <View style={styles.container}>
         <TouchableOpacity style={styles.mainmenuBtn} onPress={() => this.props.navigation.navigate('HomeScreen')}>
@@ -24,19 +33,32 @@ export default class GameScreen extends React.Component {
         <Text style={styles.timerText}>Seconds Elapsed:{this.state.time}</Text>
      
       <View style={styles.cardRow}>
-        <Text style={styles.cardNumber}>1</Text>
-        <Text style={styles.cardNumber}>2</Text>
+        <Text style={styles.cardNumber}>{this.state.card1}</Text>
+        <Text style={styles.cardNumber}>{this.state.card2}</Text>
      </View>
      <View style={styles.cardRow}>
-       <Text style={styles.cardNumber}>3</Text>
-       <Text style={styles.cardNumber}>4</Text>
+       <Text style={styles.cardNumber}>{this.state.card3}</Text>
+       <Text style={styles.cardNumber}>{this.state.card4}</Text>
        </View>
-      </View> 
-
+     
+      <TouchableOpacity style={styles.newNumberBtn} onPress={this.changeNumbers}>
+        <Text style={styles.newNumberText}>New Numbers</Text>
+        </TouchableOpacity>
+    
+    </View>  
     );
-  }
-}
+    }
+    changeNumbers(){
+      let newNumbers= Cards.all[Math.floor(Math.random() * Cards.all.length)];
+      this.setState({
+        card1: newNumbers[0],
+       card2: newNumbers[1],
+        card3: newNumbers[2],
+       card4: newNumbers[3],
 
+      })
+}
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -58,9 +80,17 @@ cardRow:{
   flexDirection: 'row',
   paddingTop: 50,
 },
-cardnumber: {
+cardNumber: {
   fontSize: 62,
   color: 'white',
   paddingLeft: 40,
-}
+},
+newNumberBtn: {
+  backgroundColor: 'yellow',
+  borderRadius: 6,
+},
+newNumberText: {
+  fontSize: 48,
+  color: 'white',
+},
 });
